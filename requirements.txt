@@ -1,1 +1,1 @@
-git+git://github.com/dougreichard/sbs_scatter@master#egg=sbs_scatter
+git+https://github.com/dougreichard/sbs_scatter.git@master#egg=sbs_scatter
