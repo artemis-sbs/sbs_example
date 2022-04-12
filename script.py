@@ -1,5 +1,6 @@
 import sbs
-import lib.sbs_scatter.scatter as scatter
+import lib.sbs_utils.scatter as scatter
+
 
 asteroidList = []
 
