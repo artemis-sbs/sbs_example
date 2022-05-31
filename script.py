@@ -1,8 +1,9 @@
 import sbs
 import lib.sbs_utils.scatter as scatter
-from lib.sbs_utils import playership
 from lib.sbs_utils.playership import PlayerShip
 from lib.sbs_utils.spaceobject import SpaceObject
+from lib.sbs_utils.handlerhooks import *
+from lib.sbs_utils.spaceobject import MSpawnPassive
 
 class GuiMain:
 	def __init__(self) -> None:
@@ -37,27 +38,19 @@ class Player(PlayerShip):
 	def __init__(self):
 		pass
 
-	def spawn(self, sim):
-		# playerID will be a NUMBER, a unique value for every space object that you create.
-		ship = self.make_new_player(sim, "behav_playership", "Battle Cruiser")
-		blob = ship.data_set
-		blob.set("name_tag", f"Artemis", 0)
-		ship.side = "TTT"
+class Asteroid(SpaceObject, MSpawnPassive):
+	pass
 
 
 class Mission:
 	main = GuiMain()
 	player = Player()
-	asteroidList = []
 
 	def add_asteroids(sim, g, name):
 		landmark = None
 		for v in g:
-			asteroid = SpaceObject()
-			obj = asteroid.make_new_passive(sim, "behav_asteroid", "Asteroid 1")
-			Mission.asteroidList.append(asteroid.id)
-			asteroid = sim.get_space_object(asteroid.id)
-			sim.reposition_space_object(obj, v.x, v.y, v.z)
+			asteroid = Asteroid()
+			asteroid.spawn_v(sim, v, "","", "Asteroid 1", "behav_asteroid")
 
 			if landmark is None:
 				landmark = sim.add_navpoint(v.x, v.y+100,v.z, name, "yellow");
@@ -65,7 +58,8 @@ class Mission:
 
 	def start(sim):
 		print("Script start ")
-		Mission.player.spawn(sim)
+		# spawn(sim)
+		Mission.player.spawn(sim, 0, 0, 0, "Artemis", "TSN", "Battle Cruiser")
 
 		# making a bunch of asteroids
 		Mission.add_asteroids(sim, scatter.line(10, -2000,0,0, 2200,0, 1000,True), "line RND")
@@ -82,18 +76,5 @@ def HandlePresentGUI(sim):
 
 def HandlePresentGUIMessage(sim, message_tag, clientID):
 	Mission.main.on_message(sim, message_tag, clientID)
-
-
-def  HandleSimulationTick(sim):
-	print("Script tick")
-
-
-def HandleClientConnect(sim, clientID):
-	pass
-
-########################################################################################################
-def HandleConsoleObjectSelection(sim, con, obj_selected_id, ship_id):
-	pass
-
 
 
