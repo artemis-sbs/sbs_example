@@ -35,8 +35,7 @@ class GuiMain:
 				Mission.start(sim)
 
 class Player(PlayerShip):
-	def __init__(self):
-		pass
+	pass
 
 class Asteroid(SpaceObject, MSpawnPassive):
 	pass
@@ -60,6 +59,11 @@ class Mission:
 		print("Script start ")
 		# spawn(sim)
 		Mission.player.spawn(sim, 0, 0, 0, "Artemis", "TSN", "Battle Cruiser")
+
+		# Example 'timer' once
+		TickDispatcher.do_once(sim, lambda sim, t: print("one time 5 seconds"), 5)
+		# Example 'timer' repeating
+		TickDispatcher.do_interval(sim, lambda sim, t: print("10 seconds"), 10)
 
 		# making a bunch of asteroids
 		Mission.add_asteroids(sim, scatter.line(10, -2000,0,0, 2200,0, 1000,True), "line RND")
