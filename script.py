@@ -50,7 +50,7 @@ class Mission:
 		landmark = None
 		for v in g:
 			asteroid = Asteroid()
-			asteroid.spawn_v(sim, v, "","", "Asteroid 1", "behav_asteroid")
+			asteroid.spawn_v(sim, v, None,None, "Asteroid 1", "behav_asteroid")
 
 			if landmark is None:
 				landmark = sim.add_navpoint(v.x, v.y+100,v.z, name, "yellow");
